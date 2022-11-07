@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input type="text" v-model="count" :style=bacColor>
+    <input type="text" v-model="count" :style=bacColor><label>test</label>
     <TableShow :count="count" @changeColor="changeColor" />
     <br>
     <hr>
