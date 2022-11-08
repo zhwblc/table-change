@@ -17,10 +17,7 @@ jobs:
       # 步骤名
       - name: Checkout
         # 使用的actions脚本，这里是官方提供的获取源码脚本
-        uses: actions/checkout@v2.3.1
-        # 这个为使用 JamesIves/github-pages-deploy-action脚本所需要的配置
-        with:
-          persist-credentials: false
+        uses: actions/checkout@v3
 
       # 执行npm脚本打包项目
       - name: Install and Build
@@ -28,13 +25,12 @@ jobs:
           npm install --force
           npm run build
       
-      # 执行JamesIves/github-pages-deploy-action将项目发布到Github Pages
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+      # 执行crazy-max/ghaction-github-pages将项目发布到Github Pages
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v3
         with:
-          # 该workflow需要操作repo，因此需要一个密钥，下面会讲到如何获取这个密钥
-          ACCESS_TOKEN: ${{ secrets.VUETOKEN }}
-          # 发布到的分支
-          BRANCH: gh-pages
-          # 要发布的文件夹
-          FOLDER: dist
+          target_branch: gh-pages
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.VUETOKEN }}
